@@ -4,17 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_yamatatsu/model/task.dart';
 
 class TaskViewModel extends ChangeNotifier {
+  var editingName = '';
+  var editingMemo = '';
   List<Task> _tasks = [];
 
-  UnmodifiableListView<Task> get messages {
+  UnmodifiableListView<Task> get tasks {
     return UnmodifiableListView(_tasks);
   }
 
-  int get tasksCount {
-    return _tasks.length;
-  }
-
-  void addTask(Task newTask) {
+  void addTask() {
+    final newTask = Task(
+      name: editingName,
+      memo: editingMemo,
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
+    );
     _tasks.add(newTask);
     notifyListeners();
   }
