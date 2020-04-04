@@ -16,6 +16,9 @@ class TaskListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<TaskViewModel>(builder: (context, taskViewModel, _) {
+      if (taskViewModel.tasks.isEmpty) {
+        return _emptyView();
+      }
       return ListView.separated(
           itemBuilder: (context, index) {
             var task = taskViewModel.tasks[index];
@@ -63,6 +66,25 @@ class TaskListView extends StatelessWidget {
           style: TextStyle(
               fontSize: 18, fontWeight: FontWeight.bold, color: Colors.white),
         ),
+      ),
+    );
+  }
+
+  Widget _emptyView() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Text("You don't have a task!!!"),
+          SizedBox(height: 16),
+          Text(
+            'Complete!!!',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 32,
+            ),
+          ),
+        ],
       ),
     );
   }
