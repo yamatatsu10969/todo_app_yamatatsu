@@ -18,56 +18,7 @@ class AddTaskScreen extends StatelessWidget {
       ),
       body: Column(
         children: <Widget>[
-          Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'TaskName',
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
-                      TextFormField(
-                        initialValue: _isEdit() ? editTask.name : '',
-                        autofocus: true,
-                        validator: (value) {
-                          if (value.isEmpty) {
-                            return 'Please enter something.';
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          viewModel.editingName = value;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Memo',
-                        style: Theme.of(context).textTheme.subtitle,
-                      ),
-                      TextFormField(
-                        initialValue: _isEdit() ? editTask.name : '',
-                        onSaved: (value) {
-                          viewModel.editingMemo = value;
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _buildForm(context, viewModel),
           Spacer(),
           _buildAddButton(context)
         ],
@@ -86,6 +37,60 @@ class AddTaskScreen extends StatelessWidget {
       _isEdit() ? viewModel.updateTask(editTask) : viewModel.addTask();
       Navigator.of(context).pop();
     }
+  }
+
+  Form _buildForm(BuildContext context, TaskViewModel viewModel) {
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'TaskName',
+                  style: Theme.of(context).textTheme.subtitle,
+                ),
+                TextFormField(
+                  initialValue: _isEdit() ? editTask.name : '',
+                  autofocus: true,
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Please enter something.';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    viewModel.editingName = value;
+                  },
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Memo',
+                  style: Theme.of(context).textTheme.subtitle,
+                ),
+                TextFormField(
+                  initialValue: _isEdit() ? editTask.name : '',
+                  onSaved: (value) {
+                    viewModel.editingMemo = value;
+                  },
+                  maxLines: null,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget _buildAddButton(BuildContext context) {
