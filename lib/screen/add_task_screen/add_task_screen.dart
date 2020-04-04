@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_yamatatsu/model/task.dart';
 import 'package:todo_app_yamatatsu/view_model/task_view_model.dart';
 
 class AddTaskScreen extends StatelessWidget {
   static String id = 'add_task_screen';
   final _formKey = GlobalKey<FormState>();
+  final Task editTask;
+  AddTaskScreen({Key key, this.editTask}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     final viewModel = Provider.of<TaskViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Task'),
+        title: Text((editTask == null) ? 'Add Task' : 'Save Task'),
       ),
       body: Column(
         children: <Widget>[
@@ -29,6 +32,7 @@ class AddTaskScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle,
                       ),
                       TextFormField(
+                        initialValue: (editTask == null) ? '' : editTask.name,
                         autofocus: true,
                         validator: (value) {
                           if (value.isEmpty) {
@@ -53,6 +57,7 @@ class AddTaskScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle,
                       ),
                       TextFormField(
+                        initialValue: (editTask == null) ? '' : editTask.name,
                         onSaved: (value) {
                           viewModel.editingMemo = value;
                         },
@@ -88,7 +93,7 @@ class AddTaskScreen extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         child: Center(
           child: Text(
-            'Add',
+            (editTask == null) ? 'Add' : 'Save',
             style:
                 Theme.of(context).textTheme.title.copyWith(color: Colors.white),
           ),

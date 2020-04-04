@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:todo_app_yamatatsu/screen/add_task_screen/add_task_screen.dart';
 import 'package:todo_app_yamatatsu/screen/task_screen/task_item.dart';
 import 'package:todo_app_yamatatsu/view_model/task_view_model.dart';
 
@@ -17,6 +18,13 @@ class TaskListView extends StatelessWidget {
             return TaskItem(
               name: task.name,
               memo: task.memo,
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) {
+                    return AddTaskScreen(editTask: taskViewModel.tasks[index]);
+                  }),
+                );
+              },
             );
           },
           separatorBuilder: (_, __) => Divider(),
