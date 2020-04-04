@@ -27,6 +27,9 @@ class TaskViewModel extends ChangeNotifier {
     var updateIndex = _tasks.indexWhere((task) {
       return task.createdAt == updateTask.createdAt;
     });
+    updateTask.name = editingName;
+    updateTask.memo = editingMemo;
+    updateTask.updatedAt = DateTime.now();
     _tasks[updateIndex] = updateTask;
   }
 

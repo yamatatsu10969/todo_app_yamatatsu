@@ -14,7 +14,7 @@ class AddTaskScreen extends StatelessWidget {
     final viewModel = Provider.of<TaskViewModel>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
-        title: Text((editTask == null) ? 'Add Task' : 'Save Task'),
+        title: Text(_isEdit() ? 'Save Task' : 'Add Task'),
       ),
       body: Column(
         children: <Widget>[
@@ -32,7 +32,7 @@ class AddTaskScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle,
                       ),
                       TextFormField(
-                        initialValue: (editTask == null) ? '' : editTask.name,
+                        initialValue: _isEdit() ? editTask.name : '',
                         autofocus: true,
                         validator: (value) {
                           if (value.isEmpty) {
@@ -57,7 +57,7 @@ class AddTaskScreen extends StatelessWidget {
                         style: Theme.of(context).textTheme.subtitle,
                       ),
                       TextFormField(
-                        initialValue: (editTask == null) ? '' : editTask.name,
+                        initialValue: _isEdit() ? editTask.name : '',
                         onSaved: (value) {
                           viewModel.editingMemo = value;
                         },
@@ -75,11 +75,15 @@ class AddTaskScreen extends StatelessWidget {
     );
   }
 
+  bool _isEdit() {
+    return editTask != null;
+  }
+
   void tapAddButton(BuildContext context) {
     if (_formKey.currentState.validate()) {
       _formKey.currentState.save();
       final viewModel = Provider.of<TaskViewModel>(context, listen: false);
-      viewModel.addTask();
+      _isEdit() ? viewModel.updateTask(editTask) : viewModel.addTask();
       Navigator.of(context).pop();
     }
   }
@@ -93,7 +97,7 @@ class AddTaskScreen extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         child: Center(
           child: Text(
-            (editTask == null) ? 'Add' : 'Save',
+            _isEdit() ? 'Save' : 'Add',
             style:
                 Theme.of(context).textTheme.title.copyWith(color: Colors.white),
           ),
