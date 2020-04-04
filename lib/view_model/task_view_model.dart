@@ -31,6 +31,14 @@ class TaskViewModel extends ChangeNotifier {
     updateTask.memo = editingMemo;
     updateTask.updatedAt = DateTime.now();
     _tasks[updateIndex] = updateTask;
+    notifyListeners();
+  }
+
+  void toggleDone(int index, bool isDone) {
+    var task = _tasks[index];
+    task.isDone = isDone;
+    _tasks[index] = task;
+    notifyListeners();
   }
 
   // MARK: mock

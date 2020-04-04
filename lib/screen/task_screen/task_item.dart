@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:todo_app_yamatatsu/model/task.dart';
 
 class TaskItem extends StatelessWidget {
-  final String name;
-  final String memo;
+  final Task task;
   final VoidCallback onTap;
+  final Function(bool) toggleDone;
 
   const TaskItem(
-      {Key key, @required this.name, @required this.memo, @required this.onTap})
+      {Key key,
+      @required this.onTap,
+      @required this.task,
+      @required this.toggleDone})
       : super(key: key);
 
   @override
@@ -23,7 +27,7 @@ class TaskItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    name,
+                    task.name,
                     style: Theme.of(context)
                         .textTheme
                         .headline
@@ -31,7 +35,7 @@ class TaskItem extends StatelessWidget {
                   ),
                   SizedBox(height: 4),
                   Text(
-                    memo,
+                    task.memo,
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.body1,
@@ -39,10 +43,12 @@ class TaskItem extends StatelessWidget {
                 ],
               ),
             ),
-//          Spacer(),
             Checkbox(
-              value: true,
-              onChanged: (value) {},
+              value: task.isDone,
+              onChanged: (value) {
+                print(value);
+                toggleDone(value);
+              },
               activeColor: Colors.lightGreen,
             )
           ],

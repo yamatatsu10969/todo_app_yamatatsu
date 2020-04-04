@@ -16,14 +16,16 @@ class TaskListView extends StatelessWidget {
           itemBuilder: (context, index) {
             var task = taskViewModel.tasks[index];
             return TaskItem(
-              name: task.name,
-              memo: task.memo,
+              task: task,
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) {
                     return AddTaskScreen(editTask: taskViewModel.tasks[index]);
                   }),
                 );
+              },
+              toggleDone: (value) {
+                taskViewModel.toggleDone(index, value);
               },
             );
           },
