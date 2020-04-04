@@ -58,7 +58,7 @@ class AddTaskScreen extends StatelessWidget {
                   autofocus: true,
                   validator: (value) {
                     if (value.isEmpty) {
-                      return 'Please enter something.';
+                      return 'Please input something.';
                     }
                     return null;
                   },
