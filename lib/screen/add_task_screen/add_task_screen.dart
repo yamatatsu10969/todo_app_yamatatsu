@@ -83,7 +83,6 @@ class AddTaskScreen extends StatelessWidget {
                   onSaved: (value) {
                     viewModel.editingMemo = value;
                   },
-                  maxLines: null,
                 ),
               ],
             ),
