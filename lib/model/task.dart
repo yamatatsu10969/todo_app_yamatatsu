@@ -4,5 +4,5 @@ class Task {
   final DateTime createdAt;
   final DateTime updatedAt;
 
-  Task(this.name, this.memo, this.createdAt, this.updatedAt);
+  Task({this.name, this.memo, this.createdAt, this.updatedAt});
 }
