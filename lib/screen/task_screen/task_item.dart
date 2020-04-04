@@ -33,13 +33,19 @@ class TaskItem extends StatelessWidget {
                         .headline
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    task.memo,
-                    maxLines: 3,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.body1,
-                  ),
+                  (task.memo.isEmpty)
+                      ? Container()
+                      : Column(
+                          children: <Widget>[
+                            SizedBox(height: 4),
+                            Text(
+                              task.memo,
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
+                              style: Theme.of(context).textTheme.body1,
+                            ),
+                          ],
+                        ),
                 ],
               ),
             ),

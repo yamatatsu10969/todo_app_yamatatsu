@@ -41,6 +41,11 @@ class TaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void deleteTask(int index) {
+    _tasks.removeAt(index);
+    notifyListeners();
+  }
+
   // MARK: mock
   static List<Task> mockTasks = [
     Task(
