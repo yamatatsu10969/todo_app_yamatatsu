@@ -6,23 +6,47 @@ import 'package:todo_app_yamatatsu/view_model/task_view_model.dart';
 
 class AddTaskScreen extends StatelessWidget {
   static String id = 'add_task_screen';
-  final _formKey = GlobalKey<FormState>();
   final Task editTask;
   AddTaskScreen({Key key, this.editTask}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final viewModel = Provider.of<TaskViewModel>(context, listen: false);
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(_isEdit() ? 'Save Task' : 'Add Task'),
-      ),
-      body: Column(
-        children: <Widget>[
-          _buildForm(context, viewModel),
-          Spacer(),
-          _buildAddButton(context)
-        ],
-      ),
+    return Consumer<TaskViewModel>(
+      builder: (context, viewModel, _) {
+        return WillPopScope(
+          onWillPop: () async {
+            viewModel.clear();
+            return true;
+          },
+          child: Scaffold(
+            appBar: AppBar(
+              title: Text(_isEdit() ? 'Save Task' : 'Add Task'),
+            ),
+            body: ListView(
+              children: <Widget>[
+                _buildInputField(
+                  context,
+                  title: 'Name',
+                  errorText: viewModel.isValidate
+                      ? viewModel.validateTaskString
+                      : null,
+                  didChanged: (value) {
+                    viewModel.setTaskName(value);
+                  },
+                ),
+                _buildInputField(
+                  context,
+                  title: 'Memo',
+                  errorText: null,
+                  didChanged: (value) {
+                    viewModel.setMemo(value);
+                  },
+                ),
+                _buildAddButton(context),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -31,61 +55,30 @@ class AddTaskScreen extends StatelessWidget {
   }
 
   void tapAddButton(BuildContext context) {
-    if (_formKey.currentState.validate()) {
-      _formKey.currentState.save();
-      final viewModel = Provider.of<TaskViewModel>(context, listen: false);
+    final viewModel = Provider.of<TaskViewModel>(context, listen: false);
+    viewModel.isValidate = true;
+    if (viewModel.validateTaskName()) {
       _isEdit() ? viewModel.updateTask(editTask) : viewModel.addTask();
       Navigator.of(context).pop();
     }
   }
 
-  Form _buildForm(BuildContext context, TaskViewModel viewModel) {
-    return Form(
-      key: _formKey,
+  Widget _buildInputField(BuildContext context,
+      {String title, String errorText, Function(String) didChanged}) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'TaskName',
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-                TextFormField(
-                  initialValue: _isEdit() ? editTask.name : '',
-                  autofocus: true,
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Please input something.';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    viewModel.editingName = value;
-                  },
-                ),
-              ],
-            ),
+          Text(
+            title,
+            style: Theme.of(context).textTheme.subtitle,
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Memo',
-                  style: Theme.of(context).textTheme.subtitle,
-                ),
-                TextFormField(
-                  initialValue: _isEdit() ? editTask.name : '',
-                  onSaved: (value) {
-                    viewModel.editingMemo = value;
-                  },
-                ),
-              ],
-            ),
+          TextField(
+            decoration: InputDecoration(errorText: errorText),
+            onChanged: (value) {
+              didChanged(value);
+            },
           ),
         ],
       ),
@@ -93,12 +86,12 @@ class AddTaskScreen extends StatelessWidget {
   }
 
   Widget _buildAddButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => tapAddButton(context),
-      child: Container(
-        margin: EdgeInsets.all(20),
-        height: 60,
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: RaisedButton(
+        onPressed: () => tapAddButton(context),
         color: Theme.of(context).primaryColor,
+        padding: const EdgeInsets.all(20),
         child: Center(
           child: Text(
             _isEdit() ? 'Save' : 'Add',

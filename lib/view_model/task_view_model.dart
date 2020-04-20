@@ -4,12 +4,49 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_yamatatsu/model/task.dart';
 
 class TaskViewModel extends ChangeNotifier {
-  var editingName = '';
-  var editingMemo = '';
-  List<Task> _tasks = [];
+  String _editingName = '';
+  String get editingName => _editingName;
+  String _editingMemo = '';
+  String get editingMemo => _editingMemo;
+  String _validateTaskString = '';
+  String get validateTaskString => _validateTaskString;
+  bool isValidate = false;
 
+  List<Task> _tasks = [];
   UnmodifiableListView<Task> get tasks {
     return UnmodifiableListView(_tasks);
+  }
+
+  bool validateTaskName() {
+    if (editingName.isEmpty) {
+      _validateTaskString = 'Please input something.';
+      notifyListeners();
+      print('😈 so bad ... ');
+      return false;
+    } else {
+      _validateTaskString = '';
+      isValidate = false;
+      print('🌞 good !!! nice task !');
+      return true;
+    }
+  }
+
+  void clear() {
+    _editingName = '';
+    _editingMemo = '';
+    isValidate = false;
+  }
+
+  void setTaskName(String name) {
+    _editingName = name;
+    if (isValidate) {
+      validateTaskName();
+    }
+    notifyListeners();
+  }
+
+  void setMemo(String memo) {
+    _editingMemo = memo;
   }
 
   void addTask() {
@@ -20,6 +57,7 @@ class TaskViewModel extends ChangeNotifier {
       updatedAt: DateTime.now(),
     );
     _tasks.add(newTask);
+    clear();
     notifyListeners();
   }
 
@@ -31,6 +69,7 @@ class TaskViewModel extends ChangeNotifier {
     updateTask.memo = editingMemo;
     updateTask.updatedAt = DateTime.now();
     _tasks[updateIndex] = updateTask;
+    clear();
     notifyListeners();
   }
 
