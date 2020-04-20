@@ -38,8 +38,10 @@ class TaskListView extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(builder: (context) {
-                      return AddTaskScreen(
-                          editTask: taskViewModel.tasks[index]);
+                      var task = taskViewModel.tasks[index];
+                      taskViewModel.nameController.text = task.name;
+                      taskViewModel.memoController.text = task.memo;
+                      return AddTaskScreen(editTask: task);
                     }),
                   );
                 },

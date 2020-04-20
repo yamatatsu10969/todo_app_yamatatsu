@@ -26,20 +26,18 @@ class AddTaskScreen extends StatelessWidget {
                 _buildInputField(
                   context,
                   title: 'Name',
-                  errorText: viewModel.isValidate
-                      ? viewModel.validateTaskString
-                      : null,
-                  didChanged: (value) {
-                    viewModel.setTaskName(value);
+                  textEditingController: viewModel.nameController,
+                  errorText:
+                      viewModel.validateName ? viewModel.strValidateName : null,
+                  didChanged: (_) {
+                    viewModel.updateValidateName();
                   },
                 ),
                 _buildInputField(
                   context,
                   title: 'Memo',
+                  textEditingController: viewModel.memoController,
                   errorText: null,
-                  didChanged: (value) {
-                    viewModel.setMemo(value);
-                  },
                 ),
                 _buildAddButton(context),
               ],
@@ -56,7 +54,7 @@ class AddTaskScreen extends StatelessWidget {
 
   void tapAddButton(BuildContext context) {
     final viewModel = Provider.of<TaskViewModel>(context, listen: false);
-    viewModel.isValidate = true;
+    viewModel.setValidateName(true);
     if (viewModel.validateTaskName()) {
       _isEdit() ? viewModel.updateTask(editTask) : viewModel.addTask();
       Navigator.of(context).pop();
@@ -64,7 +62,10 @@ class AddTaskScreen extends StatelessWidget {
   }
 
   Widget _buildInputField(BuildContext context,
-      {String title, String errorText, Function(String) didChanged}) {
+      {String title,
+      TextEditingController textEditingController,
+      String errorText,
+      Function(String) didChanged}) {
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -75,6 +76,7 @@ class AddTaskScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.subtitle,
           ),
           TextField(
+            controller: textEditingController,
             decoration: InputDecoration(errorText: errorText),
             onChanged: (value) {
               didChanged(value);

@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:todo_app_yamatatsu/model/task.dart';
 
 class TaskViewModel extends ChangeNotifier {
-  String _editingName = '';
-  String get editingName => _editingName;
-  String _editingMemo = '';
-  String get editingMemo => _editingMemo;
-  String _validateTaskString = '';
-  String get validateTaskString => _validateTaskString;
-  bool isValidate = false;
+  String get editingName => nameController.text;
+  String get editingMemo => memoController.text;
+  TextEditingController nameController = TextEditingController();
+  TextEditingController memoController = TextEditingController();
+  String _strValidateName = '';
+  String get strValidateName => _strValidateName;
+  bool _validateName = false;
+  bool get validateName => _validateName;
 
   List<Task> _tasks = [];
   UnmodifiableListView<Task> get tasks {
@@ -19,58 +20,54 @@ class TaskViewModel extends ChangeNotifier {
 
   bool validateTaskName() {
     if (editingName.isEmpty) {
-      _validateTaskString = 'Please input something.';
+      _strValidateName = 'Please input something.';
       notifyListeners();
-      print('😈 so bad ... ');
       return false;
     } else {
-      _validateTaskString = '';
-      isValidate = false;
-      print('🌞 good !!! nice task !');
+      _strValidateName = '';
+      _validateName = false;
       return true;
     }
   }
 
-  void clear() {
-    _editingName = '';
-    _editingMemo = '';
-    isValidate = false;
+  void setValidateName(bool value) {
+    _validateName = value;
   }
 
-  void setTaskName(String name) {
-    _editingName = name;
-    if (isValidate) {
+  void clear() {
+    nameController.clear();
+    memoController.clear();
+    _validateName = false;
+    notifyListeners();
+  }
+
+  void updateValidateName() {
+    if (validateName) {
       validateTaskName();
     }
     notifyListeners();
   }
 
-  void setMemo(String memo) {
-    _editingMemo = memo;
-  }
-
   void addTask() {
     final newTask = Task(
-      name: editingName,
-      memo: editingMemo,
+      name: nameController.text,
+      memo: memoController.text,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
     );
     _tasks.add(newTask);
     clear();
-    notifyListeners();
   }
 
   void updateTask(Task updateTask) {
     var updateIndex = _tasks.indexWhere((task) {
       return task.createdAt == updateTask.createdAt;
     });
-    updateTask.name = editingName;
-    updateTask.memo = editingMemo;
+    updateTask.name = nameController.text;
+    updateTask.memo = memoController.text;
     updateTask.updatedAt = DateTime.now();
     _tasks[updateIndex] = updateTask;
     clear();
-    notifyListeners();
   }
 
   void toggleDone(int index, bool isDone) {
