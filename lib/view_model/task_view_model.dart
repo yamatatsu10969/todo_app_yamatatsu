@@ -81,28 +81,4 @@ class TaskViewModel extends ChangeNotifier {
     _tasks.removeAt(index);
     notifyListeners();
   }
-
-  // MARK: mock
-  static List<Task> mockTasks = [
-    Task(
-        name: 'Buy mac book',
-        memo: 'Too expensive ...',
-        createdAt: DateTime.now().subtract(new Duration(days: 50)),
-        updatedAt: DateTime.now()),
-    Task(
-        name: 'Buy mac book',
-        memo: 'Too expensive ...',
-        createdAt: DateTime.now().subtract(new Duration(days: 50)),
-        updatedAt: DateTime.now()),
-    Task(
-        name: 'Buy mac book',
-        memo: 'Too expensive ...',
-        createdAt: DateTime.now().subtract(new Duration(days: 50)),
-        updatedAt: DateTime.now()),
-    Task(
-        name: 'Buy mac book',
-        memo: 'Too expensive ...',
-        createdAt: DateTime.now().subtract(new Duration(days: 50)),
-        updatedAt: DateTime.now()),
-  ];
 }
