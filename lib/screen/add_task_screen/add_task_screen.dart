@@ -16,10 +16,9 @@ class AddTaskScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(_isEdit() ? 'Save Task' : 'Add Task'),
       ),
-      body: Column(
+      body: ListView(
         children: <Widget>[
           _buildForm(context, viewModel),
-          Spacer(),
           _buildAddButton(context)
         ],
       ),
