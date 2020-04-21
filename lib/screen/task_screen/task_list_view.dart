@@ -36,8 +36,8 @@ class TaskListView extends StatelessWidget {
               child: TaskItem(
                 task: task,
                 onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) {
+                  Navigator.of(context).push<dynamic>(
+                    MaterialPageRoute<dynamic>(builder: (context) {
                       return AddTaskScreen(
                           editTask: taskViewModel.tasks[index]);
                     }),
