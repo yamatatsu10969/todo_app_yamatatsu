@@ -18,14 +18,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Yamatatsu TODO',
-        theme: ThemeData(
-          primarySwatch: Colors.lightGreen,
-        ),
-        initialRoute: TaskScreen.id,
-        routes: {
-          TaskScreen.id: (context) => TaskScreen(),
-          AddTaskScreen.id: (context) => AddTaskScreen(),
-        });
+      title: 'Yamatatsu TODO',
+      theme: ThemeData(
+        primarySwatch: Colors.lightGreen,
+      ),
+      initialRoute: TaskScreen.id,
+      routes: {
+        TaskScreen.id: (context) => TaskScreen(),
+        AddTaskScreen.id: (context) => AddTaskScreen(),
+      },
+    );
   }
 }

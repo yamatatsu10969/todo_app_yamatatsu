@@ -10,17 +10,15 @@ class TaskScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Task List'),
         actions: [
-          Builder(builder: (context) {
-            return GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, AddTaskScreen.id);
-              },
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Icon(Icons.add),
-              ),
-            );
-          }),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, AddTaskScreen.id);
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(Icons.add),
+            ),
+          ),
         ],
       ),
       body: Container(

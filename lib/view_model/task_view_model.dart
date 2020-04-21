@@ -34,18 +34,11 @@ class TaskViewModel extends ChangeNotifier {
     _validateName = value;
   }
 
-  void clear() {
-    nameController.clear();
-    memoController.clear();
-    _validateName = false;
-    notifyListeners();
-  }
-
   void updateValidateName() {
     if (validateName) {
       validateTaskName();
+      notifyListeners();
     }
-    notifyListeners();
   }
 
   void addTask() {
@@ -70,6 +63,11 @@ class TaskViewModel extends ChangeNotifier {
     clear();
   }
 
+  void deleteTask(int index) {
+    _tasks.removeAt(index);
+    notifyListeners();
+  }
+
   void toggleDone(int index, bool isDone) {
     var task = _tasks[index];
     task.isDone = isDone;
@@ -77,8 +75,10 @@ class TaskViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteTask(int index) {
-    _tasks.removeAt(index);
+  void clear() {
+    nameController.clear();
+    memoController.clear();
+    _validateName = false;
     notifyListeners();
   }
 }
