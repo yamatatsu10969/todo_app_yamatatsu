@@ -1,6 +1,11 @@
 # todo_app_yamatatsu
 
-A new Flutter application.
+State management is `Provider + ChangeNotifier` .
+You can choose branch `textField` and `textFormField`. 
+
+I wrote the article in Japanese → [Flutter で TODO アプリ📝 を作ってみた！ - Qiita](https://qiita.com/yamatatsu10969/items/3d47cfd66569de98c222)
+
+
 
 ## Getting Started
 
